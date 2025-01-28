@@ -7,6 +7,15 @@ actions:
       - main
     mirror: https://deb.debian.org/debian
 
+  # Set up the sources list with security updates enabled.
+  - action: overlay
+    source: assets/apt
+
+  # Install security updates for packages installed by debootstrap.
+  - action: run
+    chroot: true
+    command: apt-get update && apt-get --yes --quiet dist-upgrade
+
   # Install a kernel image
   - action: apt
     packages:
