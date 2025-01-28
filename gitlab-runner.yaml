@@ -22,6 +22,14 @@ actions:
       - linux-image-amd64
       - zstd
 
+  # Provide a root shell on /dev/ttyS1
+  - action: overlay
+    source: assets/getty
+
+  - action: run
+    chroot: true
+    command: systemctl enable serial-getty@ttyS1.service
+
   # Remove the package list. The image should not be used interactively.
   # Maintenance should instead be performed by generating a new image instead.
   - action: run

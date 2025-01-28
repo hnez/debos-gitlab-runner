@@ -25,3 +25,15 @@ Running the Image
 
 See `gitlab-runner.service` for an example on how to run the image in a
 qemu VM.
+
+Debugging the Image
+-------------------
+
+You can log into the machine to find out what's wrong using:
+
+    $ socat -,rawer,escape=0x1d UNIX-CONNECT:shell.sock
+
+You need to press enter to get an initial prompt.
+To exit from the shell, press the CTRL-] escape code.
+
+Change the config and generate a new image once you found out what's wrong!

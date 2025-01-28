@@ -12,6 +12,8 @@ ExecStart=/usr/bin/qemu-system-x86_64 \
     -device virtio-rng-pci,rng=rng0,id=rng-device0 \
     -device isa-serial,chardev=bootlog \
     -chardev stdio,id=bootlog \
+    -device isa-serial,chardev=telnet \
+    -chardev socket,id=telnet,server=on,wait=off,path=shell.sock \
     -drive if=virtio,format=raw,discard=unmap,file=gitlab-runner.rootfs.ext4 \
     -kernel vmlinuz-6.1.0-29-amd64 \
     -initrd initrd.img-6.1.0-29-amd64 \
