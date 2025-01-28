@@ -1,0 +1,30 @@
+architecture: amd64
+
+actions:
+  - action: debootstrap
+    suite: bookworm
+    components:
+      - main
+    mirror: https://deb.debian.org/debian
+
+  # Install a kernel image
+  - action: apt
+    packages:
+      - linux-image-amd64
+      - zstd
+
+  # Remove the package list. The image should not be used interactively.
+  # Maintenance should instead be performed by generating a new image instead.
+  - action: run
+    chroot: true
+    command: rm -rf /var/lib/apt/lists/*
+
+  # Copy out the initrd and kernel so they can be used with the qemu -kernel
+  # and -initrd arguments.
+  - action: run
+    command: cp "${ROOTDIR}/boot/initrd.img"* "${ROOTDIR}/boot/vmlinuz"* "${ARTIFACTDIR}"
+
+  # Generate an ext4 image from the root filesystem for use as /dev/vda image
+  # without a partition table etc.
+  - action: run
+    command: mke2fs -d "${ROOTDIR}" -L root "${ARTIFACTDIR}/gitlab-runner.rootfs.ext4" 4G

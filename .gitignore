@@ -1,0 +1,3 @@
+gitlab-runner.rootfs.ext4
+initrd.img*
+vmlinuz*

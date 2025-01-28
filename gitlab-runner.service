@@ -1,0 +1,21 @@
+[Unit]
+Description=Virtual machine containing a GitLab runner
+
+[Service]
+User=gitlab-runner
+WorkingDirectory=/srv/gitlab-runner
+ExecStart=/usr/bin/qemu-system-x86_64 \
+    -nodefaults -nographic -enable-kvm -m 512 -smp 1 \
+    -M type=q35,accel=kvm,smm=on -cpu max \
+    -global ICH9-LPC.disable_s3=1 \
+    -object rng-random,filename=/dev/urandom,id=rng0 \
+    -device virtio-rng-pci,rng=rng0,id=rng-device0 \
+    -device isa-serial,chardev=bootlog \
+    -chardev stdio,id=bootlog \
+    -drive if=virtio,format=raw,discard=unmap,file=gitlab-runner.rootfs.ext4 \
+    -kernel vmlinuz-6.1.0-29-amd64 \
+    -initrd initrd.img-6.1.0-29-amd64 \
+    -append "root=/dev/vda rw console=ttyS0"
+
+[Install]
+WantedBy=multi-user.target
