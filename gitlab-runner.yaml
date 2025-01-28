@@ -16,10 +16,11 @@ actions:
     chroot: true
     command: apt-get update && apt-get --yes --quiet dist-upgrade
 
-  # Install a kernel image
+  # Install a kernel image and systemd-resolved
   - action: apt
     packages:
       - linux-image-amd64
+      - systemd-resolved
       - zstd
 
   # Provide a root shell on /dev/ttyS1
@@ -29,6 +30,14 @@ actions:
   - action: run
     chroot: true
     command: systemctl enable serial-getty@ttyS1.service
+
+  # Configure the virtual network interface
+  - action: overlay
+    source: assets/network
+
+  - action: run
+    chroot: true
+    command: systemctl enable systemd-networkd
 
   # Remove the package list. The image should not be used interactively.
   # Maintenance should instead be performed by generating a new image instead.
