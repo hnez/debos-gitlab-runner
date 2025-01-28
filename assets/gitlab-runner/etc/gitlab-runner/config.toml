@@ -6,4 +6,4 @@ token = "GITLAB_TOKEN"
 executor = "docker"
 
 [runners.docker]
-volumes = ["/cache"]
+volumes = ["/etc/gitlab-runner/lavacli.yaml:/root/.config/lavacli.yaml", "/cache"]
