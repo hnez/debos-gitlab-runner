@@ -1,0 +1,9 @@
+concurrent = 1
+
+[[runners]]
+url = "GITLAB_URL"
+token = "GITLAB_TOKEN"
+executor = "docker"
+
+[runners.docker]
+volumes = ["/cache"]

@@ -2,7 +2,9 @@ GitLab Runner Image Generator
 =============================
 
 This repository contains a [debos](https://github.com/go-debos/debos)
-configuration for the generation of a small-ish VM image.
+configuration for the generation of a small-ish VM image containing
+the [gitlab-runner](https://gitlab.com/gitlab-org/gitlab-runner)
+application.
 
 Building the Image
 ------------------
@@ -18,6 +20,8 @@ With a bit of luck you can install debos using:
 And build the image files using:
 
     $ debos --debug-shell --cpus 10 --scratchsize=8192MB \
+        -t gitlab_url:"https://gitlab.com" \
+        -t gitlab_token:"glrt-t3_ABCDEFGHIJKLMNOPQRST" \
         gitlab-runner.yaml
 
 Running the Image

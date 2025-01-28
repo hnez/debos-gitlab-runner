@@ -1,1 +1,5 @@
 deb http://deb.debian.org/debian bookworm main
+
+# The gitlab-runner package is not available in bookworm, bookworm-backports
+# or testing yet. Only unstable/sid.
+deb http://deb.debian.org/debian unstable main

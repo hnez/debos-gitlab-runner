@@ -7,7 +7,8 @@ actions:
       - main
     mirror: https://deb.debian.org/debian
 
-  # Set up the sources list with security updates enabled.
+  # Set up the sources list with unstable sources (for gitlab-runner)
+  # and security updates enabled.
   - action: overlay
     source: assets/apt
 
@@ -38,6 +39,33 @@ actions:
   - action: run
     chroot: true
     command: systemctl enable systemd-networkd
+
+  # Install the gitlab runner application and docker
+  - action: apt
+    packages:
+      - apparmor
+      - ca-certificates
+      - cdebootstrap
+      - docker.io
+      - git
+      - gitlab-runner
+      - xz-utils
+
+  # Configure the GitLab runner and its logging
+  - action: overlay
+    source: assets/gitlab-runner
+
+  # Fill in config/secrets from the commandline
+  - action: run
+    chroot: true
+    command: |
+      sed -i "s|GITLAB_URL|{{ .gitlab_url }}|" /etc/gitlab-runner/config.toml
+      sed -i "s|GITLAB_TOKEN|{{ .gitlab_token }}|" /etc/gitlab-runner/config.toml
+
+  # Generate the GitLab helper docker image on first boot
+  - action: run
+    chroot: true
+    command: systemctl enable gitlab-runner-helper.service
 
   # Remove the package list. The image should not be used interactively.
   # Maintenance should instead be performed by generating a new image instead.

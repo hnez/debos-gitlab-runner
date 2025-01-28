@@ -1,0 +1,14 @@
+[Unit]
+Description=Generate the GitLab helper Docker image
+After=docker.service
+Before=gitlab-runner.service
+ConditionPathExists=!/var/lib/gitlab-runner/gitlab-runner-helper.tar.xz
+
+[Service]
+Type=oneshot
+ExecStart=/usr/lib/gitlab-runner/mk-prebuilt-images.sh
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=gitlab-runner.service
