@@ -7,8 +7,8 @@ actions:
       - main
     mirror: https://deb.debian.org/debian
 
-  # Set up the sources list with unstable sources (for gitlab-runner)
-  # and security updates enabled.
+  # Set up the sources list with sources for gitlab-runner and security updates
+  # enabled.
   - action: overlay
     source: assets/apt
 
@@ -64,11 +64,6 @@ actions:
       sed -i "s|LAVA_URL|{{ .lava_url }}|" /etc/gitlab-runner/lavacli.yaml
       sed -i "s|LAVA_TOKEN|{{ .lava_token }}|" /etc/gitlab-runner/lavacli.yaml
       sed -i "s|LAVA_USERNAME|{{ .lava_username }}|" /etc/gitlab-runner/lavacli.yaml
-
-  # Generate the GitLab helper docker image on first boot
-  - action: run
-    chroot: true
-    command: systemctl enable gitlab-runner-helper.service
 
   # Remove the package list. The image should not be used interactively.
   # Maintenance should instead be performed by generating a new image instead.
