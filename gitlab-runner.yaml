@@ -79,4 +79,4 @@ actions:
   # Generate an ext4 image from the root filesystem for use as /dev/vda image
   # without a partition table etc.
   - action: run
-    command: mke2fs -d "${ROOTDIR}" -L root "${ARTIFACTDIR}/gitlab-runner.rootfs.ext4" 4G
+    command: mke2fs -d "${ROOTDIR}" -L root "${ARTIFACTDIR}/gitlab-runner.rootfs.ext4" 8G
