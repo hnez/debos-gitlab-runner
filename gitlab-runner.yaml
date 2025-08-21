@@ -2,7 +2,7 @@ architecture: amd64
 
 actions:
   - action: debootstrap
-    suite: bookworm
+    suite: trixie
     components:
       - main
     mirror: https://deb.debian.org/debian
