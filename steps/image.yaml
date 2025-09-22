@@ -1,0 +1,15 @@
+architecture: amd64
+
+actions:
+  - action: unpack
+    file: {{ .input_tarball }}
+
+  # Copy out the initrd and kernel so they can be used with the qemu -kernel
+  # and -initrd arguments.
+  - action: run
+    command: cp "${ROOTDIR}/boot/initrd.img"* "${ROOTDIR}/boot/vmlinuz"* "${ARTIFACTDIR}"
+
+  # Generate an ext4 image from the root filesystem for use as /dev/vda image
+  # without a partition table etc.
+  - action: run
+    command: mke2fs -d "${ROOTDIR}" -L root "${ARTIFACTDIR}/gitlab-runner.rootfs.ext4" 8G

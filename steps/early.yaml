@@ -1,0 +1,41 @@
+architecture: amd64
+
+actions:
+  - action: unpack
+    file: {{ .input_tarball }}
+
+  # Set up the sources list with sources for gitlab-runner and security updates
+  # enabled.
+  - action: overlay
+    source: ../assets/apt
+
+  # Install security updates for packages installed by debootstrap.
+  - action: run
+    chroot: true
+    command: apt-get update && apt-get --yes --quiet dist-upgrade
+
+  # Install a kernel image and systemd-resolved
+  - action: apt
+    packages:
+      - linux-image-amd64
+      - systemd-resolved
+      - zstd
+
+  # Provide a root shell on /dev/ttyS1
+  - action: overlay
+    source: ../assets/getty
+
+  - action: run
+    chroot: true
+    command: systemctl enable serial-getty@ttyS1.service
+
+  # Configure the virtual network interface
+  - action: overlay
+    source: ../assets/network
+
+  - action: run
+    chroot: true
+    command: systemctl enable systemd-networkd
+
+  - action: pack
+    file: {{ .output_tarball }}

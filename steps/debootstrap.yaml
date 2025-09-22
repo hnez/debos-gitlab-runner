@@ -1,0 +1,11 @@
+architecture: amd64
+
+actions:
+  - action: debootstrap
+    suite: trixie
+    components:
+      - main
+    mirror: https://deb.debian.org/debian
+
+  - action: pack
+    file: {{ .output_tarball }}

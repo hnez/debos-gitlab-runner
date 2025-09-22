@@ -2,3 +2,4 @@
 /initrd.img*
 /vmlinuz*
 /build.sh
+/tarballs

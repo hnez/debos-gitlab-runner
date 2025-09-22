@@ -24,13 +24,15 @@ With a bit of luck you can install debos using:
 
 And build the image files using:
 
-    $ debos --debug-shell --cpus 10 --scratchsize=8192MB \
-        -t gitlab_url:"https://gitlab.com" \
-        -t gitlab_token:"glrt-t3_ABCDEFGHIJKLMNOPQRST" \
-        -t lava_url:"https://lava.pengutronix.de/" \
-        -t lava_token:"l123456" \
-        -t lava_username:"gitlab-runner" \
-        gitlab-runner.yaml
+    $ export DEBOS_ARGS="\
+         --debug-shell --cpus 10 --scratchsize=8192MB \
+        -t gitlab_url:\"https://gitlab.com\" \
+        -t gitlab_token:\"glrt-t3_ABCDEFGHIJKLMNOPQRST\" \
+        -t lava_url:\"https://lava.pengutronix.de/\" \
+        -t lava_token:\"l123456\" \
+        -t lava_username:\"gitlab-runner\" \
+      "
+    $ make
 
 Running the Image
 -----------------

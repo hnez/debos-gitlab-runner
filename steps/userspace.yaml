@@ -1,0 +1,39 @@
+architecture: amd64
+
+actions:
+  - action: unpack
+    file: {{ .input_tarball }}
+
+  # Install the gitlab runner application and docker
+  - action: apt
+    packages:
+      - apparmor
+      - ca-certificates
+      - cdebootstrap
+      - docker.io
+      - git
+      - gitlab-runner
+      - xz-utils
+
+  # Configure the GitLab runner and its logging
+  - action: overlay
+    source: ../assets/gitlab-runner
+
+  # Fill in config/secrets from the commandline
+  - action: run
+    chroot: true
+    command: |
+      sed -i "s|GITLAB_URL|{{ .gitlab_url }}|" /etc/gitlab-runner/config.toml
+      sed -i "s|GITLAB_TOKEN|{{ .gitlab_token }}|" /etc/gitlab-runner/config.toml
+      sed -i "s|LAVA_URL|{{ .lava_url }}|" /etc/gitlab-runner/lavacli.yaml
+      sed -i "s|LAVA_TOKEN|{{ .lava_token }}|" /etc/gitlab-runner/lavacli.yaml
+      sed -i "s|LAVA_USERNAME|{{ .lava_username }}|" /etc/gitlab-runner/lavacli.yaml
+
+  # Remove the package list. The image should not be used interactively.
+  # Maintenance should instead be performed by generating a new image instead.
+  - action: run
+    chroot: true
+    command: rm -rf /var/lib/apt/lists/*
+
+  - action: pack
+    file: {{ .output_tarball }}
