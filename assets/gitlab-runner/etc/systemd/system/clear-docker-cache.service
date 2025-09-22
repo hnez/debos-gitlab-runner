@@ -1,0 +1,6 @@
+[Unit]
+Description=Clean up old docker images
+
+[Service]
+Type=oneshot
+ExecStart=/usr/share/gitlab-runner/clear-docker-cache

@@ -19,6 +19,11 @@ actions:
   - action: overlay
     source: ../assets/gitlab-runner
 
+  # Periodically clean up old docker images
+  - action: run
+    chroot: true
+    command: systemctl enable clear-docker-cache.timer
+
   # Fill in config/secrets from the commandline
   - action: run
     chroot: true

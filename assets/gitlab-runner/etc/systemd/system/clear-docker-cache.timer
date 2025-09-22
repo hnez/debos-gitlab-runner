@@ -1,0 +1,8 @@
+[Unit]
+Description=Periodically clean up old docker images
+
+[Timer]
+OnCalendar=Thu, 04:33
+
+[Install]
+WantedBy=timers.target
